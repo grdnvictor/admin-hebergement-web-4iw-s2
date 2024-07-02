@@ -7,3 +7,8 @@ services:
     volumes:
         - ./conf/default.conf:/etc/nginx/conf.d/default.conf
         - ./html:/var/www/html
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
