@@ -5,10 +5,33 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-        - ./conf/default.conf:/etc/nginx/conf.d/default.conf
+        - ./conf/nginx/default.conf:/etc/nginx/conf.d/default.conf
         - ./html:/var/www/html
+        - ./var/log/nginx:/var/log/nginx
 
+  #Les logs adminer sont récupérés par nginx (via proxy_pass)
   adminer:
     image: adminer:latest
     ports:
-      - "8080:8080"
+      - "8080"
+
+  fail2ban:
+    image: lscr.io/linuxserver/fail2ban:latest
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERBOSITY=-vv #optional
+    volumes:
+      - ./conf/fail2ban/filter.d/adminer.conf:/etc/fail2ban/filter.d/adminer.conf
+      - ./conf/fail2ban/filter.d/nginx.conf:/etc/fail2ban/filter.d/nginx.conf
+      - ./conf/fail2ban/jail.local:/etc/fail2ban/jail.local
+      - ./conf/fail2ban/actions.d/iptables-multiport.conf:/etc/fail2ban/action.d/iptables-multiport.conf
+      - ./conf/fail2ban/fail2ban.conf:/etc/fail2ban/fail2ban.conf
+      - ./var/log/adminer:/var/log/adminer
+      - ./var/log/nginx:/var/log/nginx
