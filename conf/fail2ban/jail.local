@@ -19,14 +19,3 @@ maxretry = 20
 bantime  = 600
 findtime = 60
 action   = iptables-multiport[name=nginx-too-many-req, port="http,https", protocol=tcp]
-
-[fake-service]
-enabled  = true
-chain = DOCKER-USER
-port     = http,https
-filter   = nginx
-logpath  = /var/log/nginx/access.log
-maxretry = 1
-bantime  = 600
-findtime = 600
-action   = iptables-multiport[name=fake-service, port="http,https", protocol=tcp, chain=DOCKER-USER]
