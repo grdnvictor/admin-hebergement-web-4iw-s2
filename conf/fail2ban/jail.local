@@ -7,7 +7,7 @@ logpath  = /var/log/nginx/access.log
 maxretry = 5
 bantime  = 600
 findtime = 600
-action   = iptables-multiport[name=adminer-failed-auth, port="http,https", protocol=tcp]
+action   = iptables-multiport[name=adminer-failed-auth, port="http,https", protocol=tcp, chain=DOCKER-USER]
 
 [nginx-too-many-req]
 enabled  = true
@@ -18,4 +18,4 @@ logpath  = /var/log/nginx/access.log
 maxretry = 20
 bantime  = 600
 findtime = 60
-action   = iptables-multiport[name=nginx-too-many-req, port="http,https", protocol=tcp]
+action   = iptables-multiport[name=nginx-too-many-req, port="http,https", protocol=tcp, chain=DOCKER-USER]
