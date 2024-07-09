@@ -33,5 +33,16 @@ services:
       - NET_RAW
     restart: always
 
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - ./certbot/letsencrypt:/etc/letsencrypt
+      - ./nginx/log:/var/log/nginx:ro
+    environment:
+      - "HOOK=nginx -s reload"
+    command: certonly --webroot -w /var/www/html --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAINS}
+    restart: unless-stopped
+
 volumes:
   fail2ban:
