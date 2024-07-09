@@ -16,8 +16,6 @@ services:
   adminer:
     image: adminer:latest
     container_name: adminer
-    ports:
-      - "8080"
     restart: always
 
   fail2ban:
