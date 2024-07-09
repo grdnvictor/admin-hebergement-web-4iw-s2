@@ -39,9 +39,10 @@ services:
     volumes:
       - ./certbot/letsencrypt:/etc/letsencrypt
       - ./nginx/log:/var/log/nginx:ro
+      - ./html:/var/www/html:rw
     environment:
       - "HOOK=nginx -s reload"
-    command: certonly --webroot -w /var/www/html --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAINS}
+    command: certonly --webroot -w /var/www/html --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAINS} --non-interactive --keep-until-expiring
     restart: unless-stopped
 
 volumes:
