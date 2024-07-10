@@ -3,3 +3,4 @@
 nginx/log
 .DS_Store
 certbot/letsencrypt
+.env
